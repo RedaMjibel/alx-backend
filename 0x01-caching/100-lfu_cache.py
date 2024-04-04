@@ -22,7 +22,8 @@ class LFUCache(BaseCaching):
         if key in self.cache_data:
             self.cache_frequency[key] += 1
         elif len(self.cache_data) >= self.MAX_ITEMS:
-            least_frequent_key = min(self.cache_frequency, key=self.cache_frequency.get)
+            least_frequent_key = min(self.cache_frequency,
+                                     key=self.cache_frequency.get)
             del self.cache_data[least_frequent_key]
             del self.cache_frequency[least_frequent_key]
             print("DISCARD:", least_frequent_key)
