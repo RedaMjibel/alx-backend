@@ -11,8 +11,8 @@ from flask import render_template
 app = Flask(__name__)
 
 
-@app.route("/")
-def index():
+@app.route("/", methods=["GET"])
+def index() -> str:
     """ hello world """
     return render_template('0-index.html', strict_slashes=False)
 
