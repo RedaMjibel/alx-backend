@@ -13,6 +13,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
+    """ hello world """
     return render_template('0-index.html', strict_slashes=False)
 
 
