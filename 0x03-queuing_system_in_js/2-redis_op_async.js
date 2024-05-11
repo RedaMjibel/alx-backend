@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-import { createClient, print } from 'redis';
+import { createClient } from 'redis';
+import { promisify } from 'util';
 
 const client = createClient();
 
@@ -12,14 +13,19 @@ client.on('connect', () => {
   console.log('Redis client connected to the server');
 });
 
+const getAsync = promisify(client.get).bind(client);
+
 const setNewSchool = (schoolName, value) => {
   client.set(schoolName, value, redisPrint);
 };
 
-const displaySchoolValue = (schoolName) => {
-  client.get(schoolName, (_err, reply) => {
+const displaySchoolValue = async (schoolName) => {
+  try {
+    const reply = await getAsync(schoolName);
     console.log(reply);
-  });
+  } catch (error) {
+    console.error('Error:', error);
+  }
 };
 
 const redisPrint = (err, reply) => {
@@ -33,3 +39,4 @@ const redisPrint = (err, reply) => {
 displaySchoolValue('Holberton');
 setNewSchool('HolbertonSanFrancisco', '100');
 displaySchoolValue('HolbertonSanFrancisco');
+
